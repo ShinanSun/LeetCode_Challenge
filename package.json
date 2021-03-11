@@ -1,0 +1,23 @@
+{
+  "name": "leetcode_challenge",
+  "version": "1.0.0",
+  "description": "this is for Shinan Sun's leetcode toy problem collections.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha ./**/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShinanSun/LeetCode_Challenge.git"
+  },
+  "author": "Shinan Sun",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ShinanSun/LeetCode_Challenge/issues"
+  },
+  "homepage": "https://github.com/ShinanSun/LeetCode_Challenge#readme",
+  "dependencies": {
+    "mocha": "^8.3.1",
+    "should": "^13.2.3"
+  }
+}
