@@ -16,24 +16,51 @@ implementing Binary Heap using Array
 */
 class MaxBinaryHeap {
   constructor() {
-    this.values = [41, 39, 33, 18, 27, 12];
+    this.values = [];
   }
 
   insert(val) {
     this.values.push(val);
     var idx = this.values.length - 1;
-    var element = this.values[idx];
     let parentIndex = Math.floor((idx - 1) / 2);
+
     while (this.values[idx] > this.values[parentIndex]) {
       //swap;
-      this.values[idx] = this.values[parentIndex];
-      this.values[parentIndex] = element;
+      this.swap(idx, parentIndex);
       idx = parentIndex;
       parentIndex = Math.floor((idx - 1) / 2);
     }
+  }
+
+  swap(x, y) {
+    var temp = this.values[x];
+    this.values[x] = this.values[y];
+    this.values[y] = temp;
+  }
+
+  extractMax() {
+    if (!this.values.length) return;
+    this.swap(0, this.values.length - 1);
+    let oldRoot = this.values.pop();
+
+    let index = 0;
+    let left = 2 * index + 1;
+    let right = 2 * index + 2;
+    let greaterIdx = this.values[left] > this.values[right] ? left : right;
+
+    while (this.values[index] < this.values[greaterIdx]) {
+      this.swap(index, greaterIdx);
+      index = greaterIdx;
+    }
+
+    return oldRoot;
   }
 }
 
 let heap = new MaxBinaryHeap();
 heap.insert(55);
+//heap.insert(85);
 console.log('what is heap', heap.values);
+console.log('root', heap.extractMax());
+heap.extractMax();
+console.log('now heap', heap.values);
