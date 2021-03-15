@@ -11,7 +11,11 @@ commomly used for:
 implementing Binary Heap using Array
 -MaxBinaryHeap: for any parent at index of an array n, the leftchild is stored at 2n + 1; rightchild 2n + 2;
 -MinBinaryHeap: for any child at index of n,  its parent is at index Math.floor( (n-1)/2 ) 
-
+--------------------------------------------------------
+Big O of binary Heap:
+-insertion: log n
+-extraction: log n
+-search: liner
 */
 class MaxBinaryHeap {
   constructor() {
