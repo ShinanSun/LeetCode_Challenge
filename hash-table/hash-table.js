@@ -14,6 +14,7 @@ function hash(string, arrayLength) {
 //A hash table Class
 class HashTable {
   constructor(size = 53) {
+    //default size of 53, 53 is a prime number.
     this.keyMap = new Array(size);
   }
 
@@ -47,10 +48,40 @@ class HashTable {
     }
     return undefined;
   }
+
+  keys() {
+    let keyArr = [];
+    for (let box of this.keyMap) {
+      if (box) {
+        for (let [key, val] of box) {
+          keyArr.push(key);
+        }
+      }
+    }
+
+    return keyArr;
+  }
+
+  values() {
+    let valueArr = [];
+    for (let i = 0; i < this.keyMap.length; i++) {
+      if (this.keyMap[i]) {
+        for (let [key, val] of this.keyMap[i]) {
+          if (!valueArr.includes(val)) {
+            valueArr.push(val);
+          }
+        }
+      }
+    }
+    return valueArr;
+  }
 }
 
 let ht = new HashTable();
 ht.set('hello world', 'baby');
+ht.set('mom', 'love');
+ht.set('red', 'great');
 console.log(ht);
 let result = ht.get('hello world');
-console.log(result);
+console.log(ht.keys());
+console.log(ht.values());
