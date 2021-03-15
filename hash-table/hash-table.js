@@ -1,5 +1,5 @@
 /* what is hash table? hash tables are used to store key-value pairs. hash tables are fast, constant time look up/insert/remove.
-
+in Javascript, the build-in hashtables you can use Map
 */
 
 //easy version of a hash table that only convert strings;
