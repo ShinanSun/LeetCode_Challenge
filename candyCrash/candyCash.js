@@ -31,8 +31,8 @@ function candyCrash(board) {
   return candyCrash(newBoard);
 }
 
-//var result = candyCrash([1, 12, 12, 3, 3, 3, 12, 12, 5, 13]); // [1, 5, 13]
-//console.log('result', result);
+var result = candyCrash([1, 12, 12, 3, 3, 3, 12, 12, 5, 5, 5, 13]); // [1, 5, 13]
+console.log('result', result);
 
 //Optimization
 function candyCrash2(string) {
@@ -65,5 +65,5 @@ function candyCrash2(string) {
   return string;
 }
 
-var dd = candyCrash2('ABBCCCBBAAC');
-console.log('dd', dd);
+// var dd = candyCrash2('ABBCCCBAAABBC');
+// console.log('dd', dd);
