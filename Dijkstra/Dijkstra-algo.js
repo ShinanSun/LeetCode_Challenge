@@ -1,28 +1,3 @@
-// Dijkstra's algorithms
-//first, we will write a weighted graph
-class WeightedGraph {
-  constructor() {
-    this.adjacentList = {};
-  }
-
-  addVetex(vetex) {
-    if (!this.adjacentList[vetex]) this.adjacentList[vetex] = [];
-  }
-  addEdge(v1, v2, weight) {
-    this.adjacentList[v1].push({ node: v2, weight });
-    this.adjacentList[v2].push({ node: v1, weight });
-  }
-}
-
-var map = new WeightedGraph();
-map.addVetex('a');
-map.addVetex('b');
-map.addVetex('c');
-map.addEdge('a', 'b', 3);
-map.addEdge('a', 'c', 4);
-map.addEdge('c', 'b', 5);
-console.log(map);
-
 // creating a priority Queue to quickly return the smallest node
 class PriorityQueue {
   constructor() {
@@ -31,7 +6,7 @@ class PriorityQueue {
 
   enqueue(node, priority) {
     this.nodes.push({ node, priority });
-    this.sort;
+    this.sort();
   }
   sort() {
     this.nodes.sort((a, b) => a.priority - b.priority);
@@ -41,6 +16,8 @@ class PriorityQueue {
     return this.nodes.shift();
   }
 }
+// Dijkstra's algorithms
+//first, we will write a weighted graph
 
 /*
 Dijkstra's Algo PseudoCode
@@ -56,3 +33,69 @@ looping though the priority queue, while PQ.length is not 0;
     update PreviousPath; 
     dequeue again....  
 */
+
+class WeightedGraph {
+  constructor() {
+    this.adjacentList = {};
+  }
+
+  addVetex(vetex) {
+    if (!this.adjacentList[vetex]) this.adjacentList[vetex] = [];
+  }
+  addEdge(v1, v2, weight) {
+    this.adjacentList[v1].push({ node: v2, weight });
+    this.adjacentList[v2].push({ node: v1, weight });
+  }
+
+  Dikstra(start, finish) {
+    var PQ = new PriorityQueue();
+    var distances = {};
+    var previous = {};
+    var finalPath = [];
+    //set up the initial state;
+    for (let key in this.adjacentList) {
+      if (key === start) {
+        distances[key] = 0;
+        PQ.enqueue(key, 0);
+      } else {
+        distances[key] = Infinity;
+        PQ.enqueue(key, Infinity);
+      }
+      previous[key] = null;
+    }
+    //looping through the PQ;
+    while (PQ.nodes.length) {
+      var curr = PQ.dequeue().node;
+      if (curr === finish) {
+        // we are done here
+        while (previous[curr]) {
+          finalPath.push(curr);
+          curr = previous[curr];
+        }
+      }
+      if (curr || distances[curr] !== Infinity) {
+        // curr is A
+        for (let neighbor of this.adjacentList[curr]) {
+          var letter = neighbor[node]; //B
+          var newDistance = distances[curr] + neighbor.weight;
+          if (newDistance < distances[letter]) {
+            distances[letter] = newDistance;
+            previous[letter] = curr;
+            PQ.enqueue(letter, newDistance);
+          }
+        }
+      }
+    }
+    finalPath.push(start);
+    return finalPath.reverse();
+  }
+}
+
+var map = new WeightedGraph();
+map.addVetex('a');
+map.addVetex('b');
+map.addVetex('c');
+map.addEdge('a', 'b', 3);
+map.addEdge('a', 'c', 4);
+map.addEdge('c', 'b', 5);
+console.log(map);
