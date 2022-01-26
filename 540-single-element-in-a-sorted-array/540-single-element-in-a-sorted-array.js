@@ -1,6 +1,9 @@
 /**
  * @param {number[]} nums
  * @return {number}
+          
+ [1,1,4]
+ 0. 1  2
  */
 
 const isEven = function (start, end) {
@@ -27,5 +30,5 @@ var singleNonDuplicate = function(nums) {
         }
     }
      
-    return nums[left];
+    //return nums[left];
 };
