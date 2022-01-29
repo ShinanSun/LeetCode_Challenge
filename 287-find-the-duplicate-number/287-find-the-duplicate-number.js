@@ -7,9 +7,8 @@
 var findDuplicate = function(nums) {
     let dup = -1;
     for (let i = 0; i < nums.length; i++) {
-        
         let curr = Math.abs(nums[i]);
-        console.log(i, nums[i], nums[curr])
+      
         if (nums[curr] < 0) {
             dup = curr;
             break;
