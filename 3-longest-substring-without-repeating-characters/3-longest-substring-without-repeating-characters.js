@@ -1,22 +1,25 @@
 /**
  * @param {string} s
  * @return {number}
+ "abcabcbb"
  */
 var lengthOfLongestSubstring = function(s) {
     if (s.length < 2) return s.length;
     
     let maxLength = 0;
+    let map = {};
+    let p = 0;  //p is always the start index of subarray.
     for (let i = 0; i < s.length; i++) {
-        let currCount = 0;
-        let map = {};
-        for (let j = i; j < s.length; j++) {
-            if (map[s[j]]) {
-                break;
-            }
-            map[s[j]] = true;
-            currCount++;
+        let char = s[i]; //i = 4 char is b
+        if (map[char] + 1 >= p) {
+            p = map[char] + 1;
+            
         }
-        maxLength = Math.max(maxLength, currCount);
+        
+        //when no duplicate;
+        map[char] = i;
+        maxLength = Math.max(maxLength, (i - p + 1))
+        //console.log(i, p, char)
     }
     
     return maxLength;
