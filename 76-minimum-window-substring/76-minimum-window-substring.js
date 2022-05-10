@@ -2,53 +2,55 @@
  * @param {string} s
  * @param {string} t
  * @return {string}
+
+build map called need 
+have track if satisfied the need. 
+minLen, 
+minStr, 
+left, move fast as we possible can. 
+    if we satified our need, need === have, 
+        now and first update our case,
+        left increment till need !== have, 
+            if s[left] in need, we need to decrement our need count, and may decrease the have count. 
+    
+right, move one at a time. 
+ 
  */
 var minWindow = function(s, t) {
-    if (t.length === 0) return '';
-    
     const need = {};
     for (let char of t) {
         need[char] = need[char] ? ++need[char] : 1;
-    } 
-    
-    
-    let minLen = Infinity;
-    let minStr = null;
-    
-    // r move one at the time
-    // l move fast as possible
-    let l = 0;
+    }
     let have = 0;
-    for (let r = 0; r < s.length; r++) {
-        let curr = s[r];
+    let minLen = Infinity, minStr = '';
+    
+    let left = 0;
+    //assume i is our right pointer. 
+    for (let i = 0; i < s.length; i++) {
+        let curr = s[i];
         if (need[curr] === undefined) continue;
-      //  console.log(need, have, `left if ${l} and right is ${r}`)
-        need[curr]--;
         
+        need[curr]--;
         if (need[curr] === 0) have++;
-      
-        while (l <= r && have === Object.keys(need).length) {
-            // now its satified our condition. 
-            if (r - l + 1 < minLen) {
-                minLen = r - l + 1;
-                minStr = s.slice(l, r + 1);
+        
+        while(left <= i && Object.keys(need).length === have) {
+            //first update our minLen and minStr
+            if (i - left + 1 < minLen) {
+                minLen = i - left + 1;
+                minStr = s.slice(left, i + 1);
             }
             
+            // move left pointer as far as we can, till break the need == have balance.
+            let movedChar = s[left];
+            if (need[movedChar] !== undefined) {
+                need[movedChar]++;
+                if (need[movedChar] === 1) have--;
+            }
             
-            //trying move left boundary fast as possible;
-            let leftChar = s[l];
-            if (need[leftChar] !== undefined) {
-                need[leftChar]++;
-                if (need[leftChar] === 1) have--;
-            } 
-            l++;
-            
+            left++;
         }
     }
     
     
-    
-    
-    
-    return minStr ? minStr : '';
+    return minStr;
 };
