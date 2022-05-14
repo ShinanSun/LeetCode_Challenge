@@ -1,26 +1,42 @@
 /**
  * @param {number[]} arr
  * @return {void} Do not return anything, modify arr in-place instead.
+ [8,4,5,0,0,0,0,7] length = 8
+          ^ 
+ count=
  */
 var duplicateZeros = function(arr) {
-    let queue = []; //all the non-zeros
-    let zeroIndex = new Set();
     let count = 0;
+    let right = 0;
+    let flag = false;
     for (let i = 0; i < arr.length; i++) {
-        if (arr[i] !== 0) {
-            queue.push(arr[i])
+        if (arr[i] === 0) {
+            count += 2;
         } else {
-            zeroIndex.add(i + count);
-            zeroIndex.add(i + 1 + count);
             count++;
+        }
+        
+        if (count >= arr.length) {
+            right = i;
+            flag = (arr.length + 1 === count)
+            break;
         }
     }
     
-    for (let i = 0; i < arr.length; i++) {
-        if (zeroIndex.has(i)) {
-            arr[i] = 0
+    let start = arr.length - 1;
+    if (flag) {
+       arr[arr.length - 1] = 0;
+       right--;
+       start--;
+    }
+    for (let j = start; j >= 0; j--) {
+        if (arr[right] !== 0) {
+            arr[j] = arr[right]
+            right--;
         } else {
-            arr[i] = queue.shift();
+            arr[j] = 0;
+            arr[--j] = 0;
+            right--;
         }
     }
 };
