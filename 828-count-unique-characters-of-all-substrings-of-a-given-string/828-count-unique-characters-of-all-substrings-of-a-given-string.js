@@ -1,51 +1,46 @@
 /**
  * @param {string} s
- //find all substring of S and invoke each substring with count;
- return sum;
  * @return {number}
+ input = 'ABAB'
+ lastSeen = {}; // last time when we see the char;
+ left = [-1, -1, 0, 1]
+ right = [2, 3, 4, 4]
+ 
+ for each index i;
+ count += (i - left[i]) * (right[i] - i);
+ 
  */
-
 var uniqueLetterString = function(s) {
     const n = s.length;
-    if (!n) return 0;
+    let seen = {}; // index last time when we see the char; constant space;
+    const left = new Array(n).fill(-1);
+    const right = new Array(n).fill(n);
     
-    let alphabet1 = new Array(26).fill(-1); // each char a -z initial position at -1;
-    const leftBoundary = new Array(n).fill(-1);
-    const rightBoundary = new Array(n).fill(n);
+    for (let i = 0; i < s.length; i++) {
+        let curr = s[i];
+        
+        if (seen[curr] >= 0) {
+            left[i] = seen[curr];
+        }
+        seen[curr] = i;
+    }
     
-    const AcharCode = 'A'.charCodeAt();
-    //find the boundary for each char in s;
-    for (let i = 0; i < n; i++) {
-        let currChar = s[i];
-        let currCharIndex = currChar.charCodeAt() - AcharCode;
-        if (alphabet1[currCharIndex] !== -1) {
-            //now memorize the left boundary of i;
-            leftBoundary[i] = alphabet1[currCharIndex];
+    //reset seen;
+    seen = {};
+    for (let j = s.length - 1; j >= 0; j--) {
+        let curr = s[j];
+        if (seen[curr] < n) {
+            right[j] = seen[curr];
         }
         
-        alphabet1[currCharIndex] = i;
+        seen[curr] = j;
     }
     
-    let alphabet2 = new Array(26).fill(-1);
-    for (let j = n - 1; j >= 0; j--) {
-        let currChar = s[j];
-        let currCharIndex = currChar.charCodeAt() - AcharCode;
-       // console.log('what is currIndex', currCharIndex)
-        if (alphabet2[currCharIndex] !== -1) {
-            rightBoundary[j] = alphabet2[currCharIndex];
-        }
-        
-        alphabet2[currCharIndex] = j;
-    }
-    
-    //console.log(leftBoundary, rightBoundary);
-    let res = 0;
+    let count = 0;
     for (let i = 0; i < n; i++) {
-        let left = i - leftBoundary[i];
-        let right = rightBoundary[i] - i;
-        res += left * right;
+        count += (i - left[i]) * (right[i] - i);
     }
     
+    return count;
     
-    return res;
 };
