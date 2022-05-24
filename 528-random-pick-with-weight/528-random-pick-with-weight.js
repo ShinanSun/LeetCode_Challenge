@@ -1,19 +1,24 @@
 /**
  * @param {number[]} w
- w = [1, 2, 4];
- prefixSum = [1, 3, 7]; target = 3
- index 0 : < 1
- index 1:   < 3
- index 2: < 7;
- // using binarysearch to find the first element that bigger than target;
  
- [0, 1, 1, 3,3,3,3]
+ w = [1, 3, 2]
+ => [0,1,1,1,2,2] index 0 - 5, 
+ 
+preSum = [1, 4, 6]  find first greater element index. 
+[0, 1) 0
+[1, 4) 1
+[4, 6) 2
+
+random = 5
+left = 2, right = 1
+mid = 2
+
+ 
  */
 var Solution = function(w) {
-    let length = w.length;
-    this.prefixSums = [w[0]];
-    for (let i = 1; i < length; i++) {
-        this.prefixSums[i] = w[i] + this.prefixSums[i - 1];
+    this.preSum = [w[0]];
+    for (let i = 1; i < w.length; i++) {
+        this.preSum[i] = this.preSum[i - 1] + w[i];
     }
 };
 
@@ -21,19 +26,22 @@ var Solution = function(w) {
  * @return {number}
  */
 Solution.prototype.pickIndex = function() {
-    let length = this.prefixSums.length;
-    let target = Math.floor(Math.random() * this.prefixSums[length - 1]);
+   // console.log(this.preSum)
+    let n = this.preSum[this.preSum.length - 1];
+    let random = Math.floor(Math.random() * n);
     
-    let left = 0, right = length - 1;
-    while (left <= right) {
+    let left = 0, right = this.preSum.length - 1;
+    while(left <= right) {
         let mid = Math.floor((left + right) / 2);
-        if (target >= this.prefixSums[mid]) {
-            left = mid + 1;
+        
+        if (random >= this.preSum[mid]) {
+            left = mid + 1
         } else {
             right = mid - 1;
         }
     }
-     return left;
+    
+    return left;
 };
 
 /** 
