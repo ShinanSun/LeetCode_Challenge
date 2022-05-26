@@ -13,24 +13,24 @@
 var deepestLeavesSum = function(root) {
     if (!root) return 0;
     
-    
-    let sum = {};
-    let currLevel = 0;
-    let maxLevel = 0;
-    
-    let queue = [root];
-    while(queue.length) {
-        let size = queue.length;
-        sum[currLevel] = 0;
+    let currLevel = [root];
+    let nextLevel = [root];
+    while (nextLevel.length) {
+        currLevel = nextLevel.slice();
+        nextLevel = [];
+        
+        let size = currLevel.length;
         for (let i = 0; i < size; i++) {
-            let node = queue.shift();
-            sum[currLevel] += node.val;
-            if (node.left) queue.push(node.left);
-            if (node.right) queue.push(node.right);
+            let node = currLevel[i];
+            if (node.left) nextLevel.push(node.left);
+            if (node.right) nextLevel.push(node.right);
         }
-        if (currLevel > maxLevel) maxLevel = currLevel;
-        currLevel++;
     }
     
-    return sum[maxLevel];
+    let sum = 0;
+    for (let node of currLevel) {
+        sum += node.val;
+    }
+    
+    return sum;
 };
