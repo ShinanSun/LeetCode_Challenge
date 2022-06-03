@@ -12,27 +12,34 @@
 var mergeKLists = function(lists) {
     if (lists.length === 0) return null;
     
-    let minHeap = [];
-    for (let list of lists) {
-        if (list) minHeap.push([list.val, list]);
+    // let root = new ListNode();
+    // let temp = root;
+    let l1 = lists[0];
+    for (let i = 1; i < lists.length; i++) {
+        let l2 = lists[i];
+        l1 = mergeTwoLists(l2, l1);
     }
     
-    let retNode = new ListNode();
-    let temp = retNode;
-    while(minHeap.length) {
-        minHeap.sort((a, b) => a[0] - b[0]);
-        
-        let [smallVal, smallNode] = minHeap.shift();
-        temp.next = smallNode;
-        temp = temp.next;
-        
-        smallNode = smallNode.next;
-        if (smallNode) {
-            minHeap.push([smallNode.val, smallNode]);
+    return l1;
+};
+
+
+var mergeTwoLists = function(list1, list2) {
+    let head = new ListNode();
+    let temp = head;
+    while(list1 && list2) {
+        if (list1.val < list2.val) {
+            temp.next = list1;
+            list1 = list1.next;
+        } else {
+            temp.next = list2;
+            list2 = list2.next;
         }
-       
+        temp = temp.next;
+        //console.log(head)
     }
     
-    
-    return retNode.next;
+    if (list1) temp.next = list1;
+    if (list2) temp.next = list2;
+    return head.next;
 };
