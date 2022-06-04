@@ -3,20 +3,22 @@
  * @return {number[][]}
  */
 var merge = function(intervals) {
-    intervals.sort((a, b) => a[0] - b[0]);
+    intervals.sort((a, b) => a[0] - b[0]); //sort by start ascending order;
     
-    let res = [];
-    let startIndex = 0;
+    const maxHeap = [intervals[0]];
     for (let i = 1; i < intervals.length; i++) {
-        let [nextS, nextE] = intervals[i]; //2,6
-        if (nextS <= intervals[startIndex][1]) {
-            intervals[startIndex][1] = Math.max(nextE, intervals[startIndex][1])
+        //get max and compare with start;
+        let [currS, currE] = intervals[i];
+        maxHeap.sort((a, b) => b[1] - a[1]);
+        if (currS <= maxHeap[0][1]) {
+            let max = maxHeap.shift();            
+            let newEnd = Math.max(max[1], currE);
+            maxHeap.push([max[0], newEnd])
         } else {
-            res.push(intervals[startIndex].slice())
-            startIndex = i;
-        }      
+            maxHeap.push(intervals[i])
+        }
+        
     }
     
-    res.push(intervals[startIndex].slice())
-    return res;
+    return maxHeap;
 };
