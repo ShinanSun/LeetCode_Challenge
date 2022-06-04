@@ -13,7 +13,7 @@ var sumSubarrayMins = function(arr) {
     //findleft;
     let stk = [];
     for (let i = n - 1; i >= 0; i--) {
-        while (stk.length > 0 && arr[stk[stk.length - 1]] >= arr[i]) {
+        while (stk.length > 0 && arr[stk[stk.length - 1]] > arr[i]) {
             left[stk.pop()] = i;
         }
             
@@ -23,7 +23,7 @@ var sumSubarrayMins = function(arr) {
     stk = [];
     //find right;
     for (let i = 0; i < n; i++) {
-        while (stk.length > 0 && arr[stk[stk.length - 1]] > arr[i]) {
+        while (stk.length > 0 && arr[stk[stk.length - 1]] >= arr[i]) {
             right[stk.pop()] = i;
         }
         stk.push(i);
