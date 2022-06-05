@@ -4,49 +4,48 @@
  * @return {string}
  */
 var fractionToDecimal = function(numerator, denominator) {
-    //edges;
-    if (denominator === 0) return '';
-    if (numerator === 0) return '0';
+    //edge case;
     
+    if (numerator === 0) return '0';
+    if (numerator % denominator === 0) {
+        return (numerator / denominator).toString();
+    }
     let sign = 1;
-    if (denominator < 0) sign *= -1;
     if (numerator < 0) sign *= -1;
+    if (denominator < 0) sign *= -1;
     
     let A = Math.abs(numerator);
     let B = Math.abs(denominator);
-    
-    let ret = '';
+    let res = Math.floor(A/B).toString();
+  
     if (sign < 0) {
-        ret += '-'
-    }
-    let num = A / B;
-    if ( A % B === 0) {
-        return ret += num.toString();
+        res = '-' + res + '.'
     } else {
-        ret += (Math.floor(num).toString() + '.');
+        res += '.'
     }
-    
-    let mod = A % B;
-    let map = {};
-    let decimals = ''
+//      console.log(res)
+    let appears = {} //0-9 no appears before;
+    let decimals = '';
+    let mod = A % B; 
     while(mod !== 0) {
-        if (map[mod] !== undefined) {
-            decimals = insert(map[mod], decimals);
+        //check if mod appears before? if does, break;
+        if (appears[mod] !== undefined) {
+            decimals = insert(appears[mod], decimals);
             break;
         }
         
-        
-        map[mod] = decimals.length; //map[3] = 0
+        //never appears before;
+        appears[mod] = decimals.length;
         mod *= 10;
         decimals += Math.floor(mod / B).toString();
         mod = mod % B;
     }
-    return ret + decimals;
+    
+   return res + decimals; 
 };
 
-const insert = function(index, str) {
-    
-    let front = str.slice(0, index);
-    let back = str.slice(index);
+const insert = function(i, decimals) {
+    let front = decimals.slice(0, i);
+    let back = decimals.slice(i);
     return front + '(' + back + ')';
 }
