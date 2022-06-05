@@ -3,7 +3,7 @@
  * @return {string[]}
  digits = "23"
 23
-33
+
 pos =0
  */
 var letterCombinations = function(digits) {
@@ -19,22 +19,25 @@ var letterCombinations = function(digits) {
         '8': 'tuv',
         '9': 'wxyz',
     }
-    dfs(0, [], digits, phoneMap, res);
+    
+
+    dfs(0, [], digits, phoneMap, res)
     return res;
 };
 
-const dfs = function(pos, path, digits, phoneMap, result){
-    //stoping case;
-    if (pos === digits.length) {
-        result.push(path.join('')) 
-        return; // ['ad', 'ae']
+const dfs = function(depth, path, digits, phoneMap, res) {
+    if (depth === digits.length) {
+        res.push(path.join(''));
+        return;
     }
     
-        let curr = digits[pos]; //  curr digit = 3
-        for (let currChar of phoneMap[curr]) { // 'def'
-            path.push(currChar); // ['a', 'e']
-            dfs(pos + 1, path, digits, phoneMap, result);
-            path.pop();
-        }
-    
+   
+    let chars = phoneMap[digits[depth]];
+    for (let c of chars) {
+        path.push(c);
+        dfs(depth + 1, path, digits, phoneMap, res);
+        path.pop();
+    }
+
 }
+
