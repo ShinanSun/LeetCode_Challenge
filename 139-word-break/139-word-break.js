@@ -2,36 +2,32 @@
  * @param {string} s
  * @param {string[]} wordDict
  * @return {boolean}
- 
  */
 var wordBreak = function(s, wordDict) {
-    const inDict = {};
+    let dict = {};
     for (let word of wordDict) {
-        inDict[word] = true;
+        dict[word] = true;
     }
-    const memo = {}
-    return dfs(s, inDict, memo);
+    
+    return dfs(s, dict, {});
 };
 
-const dfs = function(s, inDict, memo) {
-    
-    if (memo[s] !== undefined) return memo[s];
-    
-    
-    if (inDict[s]) {
-        memo[s] = true;
+const dfs = function(s, dict, cache) {
+    if (cache[s] !== undefined) return cache[s];
+    if (dict[s]) {
+        cache[s] = true;
         return true;
     }
     
-    //now split s
-    for (let i = 1; i < s.length; i++) {
-        let left = s.slice(0, i);
-        let right = s.slice(i);
-        if (inDict[left] && dfs(right, inDict, memo)) {
-            return true;
+    for (let i = 0; i < s.length; i++) {
+        let left = s.slice(0, i + 1);
+        let right = s.slice(i + 1);
+        if (dict[left] && dfs(right, dict, cache)) {
+           cache[s] = true; 
+           return true;
         }
     }
-    memo[s] = false;
-    return false;
     
+    cache[s] = false;
+    return false;
 }
