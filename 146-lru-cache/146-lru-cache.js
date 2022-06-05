@@ -1,13 +1,16 @@
+/**
+ * @param {number} capacity
+ */
 class Node {
-    constructor(key, value) {
+    constructor(key, val) {
         this.key = key;
-        this.val = value;
+        this.val = val;
         this.prev = null;
         this.next = null;
     }
 }
 
-class DLL {
+class DoublelyLinkedList {
     constructor() {
         this.head = new Node(0, 0);
         this.tail = new Node(0, 0);
@@ -16,31 +19,32 @@ class DLL {
         this.size = 0;
     }
     
-    addNode(node) {
-        //always add the new node right before the pseudo tail;
-        node.next = this.tail;
-        node.prev = this.tail.prev;
+    //adding to the head side;
+    add(node) {
+        let next = this.head.next;
+        this.head.next = node;
+        next.prev = node;
         
-        this.tail.prev.next = node;
-        this.tail.prev = node;
+        node.prev = this.head;
+        node.next = next;
         this.size++;
     }
     
-    removeNode(node) {
+    remove(node) {
         let prev = node.prev;
         let next = node.next;
-       
+        
         prev.next = next;
         next.prev = prev;
         this.size--;
     }
-    
 }
 
+
 var LRUCache = function(capacity) {
-    this.capacity = capacity;
-    this.DLL = new DLL();
     this.map = {};
+    this.dll = new DoublelyLinkedList();
+    this.capacity = capacity;
 };
 
 /** 
@@ -48,15 +52,15 @@ var LRUCache = function(capacity) {
  * @return {number}
  */
 LRUCache.prototype.get = function(key) {
-    if (this.map[key]) {
-        let node = this.map[key];
-        
-        this.DLL.removeNode(node);
-        this.DLL.addNode(node);
-        return node.val;
-    }
+    // if there is key in the map? 
+    let node = this.map[key];
+    //remove from the dll
+    if (!node) return -1;
+    // remove and add to the head
+    this.dll.remove(node);
+    this.dll.add(node);
     
-    return -1;
+    return node.val;
 };
 
 /** 
@@ -65,21 +69,19 @@ LRUCache.prototype.get = function(key) {
  * @return {void}
  */
 LRUCache.prototype.put = function(key, value) {
-    let newNode = new Node(key, value);
-    
-    if (this.map[key]) {
-        let oldNode = this.map[key];
-        this.DLL.removeNode(oldNode);  
+    let node = this.map[key];
+    if (node) {
+        this.dll.remove(node);
     }
     
-    this.DLL.addNode(newNode);
-    this.map[key] = newNode;
+    node = new Node(key, value);
+    this.map[key] = node;
+    this.dll.add(node);
     
-
-    if (this.DLL.size > this.capacity) {
-        let removeNode = this.DLL.head.next;
-        this.DLL.removeNode(removeNode);
-        delete this.map[removeNode.key]
+    if (this.dll.size > this.capacity) {
+        let removeTail = this.dll.tail.prev;
+        this.dll.remove(removeTail);
+        delete this.map[removeTail.key];
     }
 };
 
